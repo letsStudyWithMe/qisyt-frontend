@@ -18,8 +18,9 @@ request.interceptors.request.use((config) =>{
 
 //响应拦截器
 request.interceptors.response.use((response) =>{
-    return response;
+    return response.data;
 },(error) =>{
+    console.log(error);
     //处理错误
     let status = error.response.status;
     switch (status) {

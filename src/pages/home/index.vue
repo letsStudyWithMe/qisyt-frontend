@@ -5,19 +5,16 @@
     <!--搜索框-->
     <Search/>
     <!--底部医院信息-->
-    <el-row gutter=20>
+    <el-row :gutter=20>
       <el-col :span="20">
         <!--医院等级-->
         <Level/>
         <!--医院地区-->
         <Region/>
         <!--医院结构-->
-        <div class="hospital-info" v-if="hospitalArr.length > 0">
+        <div class="hospital-info">
           <Card class="item" v-for="(item,index) in hospitalArr" :key="index" :hospitalInfo="item" />
         </div>
-<!--        <div class="hospital-info">-->
-<!--          <Card class="item" v-for="item in 10" :key="item"/>-->
-<!--        </div>-->
         <div class="page">
           <!--分页器-->
           <el-pagination
@@ -26,7 +23,9 @@
               :page-sizes="[10, 20, 30, 40]"
               :background="true"
               layout="prev, pager, next, jumper,sizes,total"
-              :total="10"
+              :total="total"
+              @current-change="currentChange"
+              @size-change="sizeChange"
           />
         </div>
       </el-col>
@@ -41,6 +40,7 @@
 <script setup lang="ts">
 import {onMounted,ref} from 'vue';
 import {reqHospital} from "@/api/home";
+import type {Content,HospitalResponseData} from "@/api/home/type.ts";
 // 引入轮播图组件
 import Carousel from './components/carousel/index.vue';
 // 引入搜索框组件
@@ -58,19 +58,29 @@ let pageNo = ref<number>(1);
 // 每页显示的条数
 let pageSize = ref<number>(10);
 // 存储已有医院的数组
-let hospitalArr = ref([]);
+let hospitalArr = ref<Content>([]);
 // 存储已有医院的个数
-let total = ref(0);
+let total = ref<number>(0);
 onMounted(()=>{
   getHostipalInfo();
 })
-
+//获取医院信息数据
 const getHostipalInfo = async ()=>{
-  let result:any = await reqHospital(pageNo.value,pageSize.value)
+  //@ts-ignore
+  let result:HospitalResponseData = await reqHospital(pageNo.value,pageSize.value)
   if (result.code == 200){
     hospitalArr.value = result.data.content;
     total.value = result.data.totalElements;
   }
+}
+//分页器页码发生变化时候触发
+const currentChange = ()=>{
+  getHostipalInfo();
+}
+//分页器下拉页条数发生变化时候触发
+const sizeChange = ()=>{
+  pageNo.value = 1;
+  getHostipalInfo();
 }
 </script>
 
