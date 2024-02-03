@@ -8,13 +8,14 @@
     <el-row :gutter=20>
       <el-col :span="20">
         <!--医院等级-->
-        <Level/>
+        <Level @getLevel="getLevel"/>
         <!--医院地区-->
-        <Region/>
+        <Region @getRegion="getRegion"/>
         <!--医院结构-->
-        <div class="hospital-info">
+        <div class="hospital-info" v-if="hospitalArr.length > 0">
           <Card class="item" v-for="(item,index) in hospitalArr" :key="index" :hospitalInfo="item" />
         </div>
+        <el-empty v-else description="没有相关医院信息"></el-empty>
         <div class="page">
           <!--分页器-->
           <el-pagination
@@ -30,8 +31,8 @@
         </div>
       </el-col>
       <el-col :span="4">
-        <!--右侧广告-->
-        456
+        <!--右侧广告提示-->
+        <HomeRightTip/>
       </el-col>
     </el-row>
   </div>
@@ -51,6 +52,8 @@ import Level from './components/level/index.vue';
 import Region from './components/region/index.vue';
 // 引入医院信息卡片组件
 import Card from './components/card/index.vue';
+// 引入右侧信息提示组件
+import HomeRightTip from './components/homeRightTip/index.vue';
 
 // 分页器需要的数据
 // 页码
@@ -61,13 +64,17 @@ let pageSize = ref<number>(10);
 let hospitalArr = ref<Content>([]);
 // 存储已有医院的个数
 let total = ref<number>(0);
+// 存储医院等级数据
+let hostype = ref<string>('');
+// 存储医院地区数据
+let districtCode = ref<string>('');
 onMounted(()=>{
   getHostipalInfo();
 })
 //获取医院信息数据
 const getHostipalInfo = async ()=>{
   //@ts-ignore
-  let result:HospitalResponseData = await reqHospital(pageNo.value,pageSize.value)
+  let result:HospitalResponseData = await reqHospital(pageNo.value,pageSize.value,hostype.value,districtCode.value)
   if (result.code == 200){
     hospitalArr.value = result.data.content;
     total.value = result.data.totalElements;
@@ -80,6 +87,17 @@ const currentChange = ()=>{
 //分页器下拉页条数发生变化时候触发
 const sizeChange = ()=>{
   pageNo.value = 1;
+  getHostipalInfo();
+}
+
+//子组件自定义事件：获取等级子组件给父组件传递的参数
+const getLevel = (level:string)=>{
+  hostype.value = level;
+  getHostipalInfo();
+}
+//子组件自定义事件：获取地区子组件给父组件传递的参数
+const getRegion = (region:string)=>{
+  districtCode.value = region;
   getHostipalInfo();
 }
 </script>

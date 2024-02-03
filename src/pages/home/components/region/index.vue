@@ -18,6 +18,8 @@ import {reqHospitalLevelAndRegion} from "@/api/home";
 let hospitalRegionlArr = ref<HospitalLevelAndRegionArr>([]);
 // 控制医院等级高亮响应式数据
 let activeFlag = ref<string>('');
+// 子组件触发父组件的事件并传值
+let $emit = defineEmits(['getRegion'])
 onMounted(()=>{
   getHostipalRegionInfo();
 })
@@ -30,8 +32,10 @@ const getHostipalRegionInfo = async ()=>{
     hospitalRegionlArr.value = result.data;
   }
 }
-const activeFlagChange = (value:string)=>{
-  activeFlag.value = value;
+const activeFlagChange = (region:string)=>{
+  activeFlag.value = region;
+  //给父组件传值
+  $emit('getRegion',region)
 }
 </script>
 

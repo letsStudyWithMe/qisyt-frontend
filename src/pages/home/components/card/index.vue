@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card class="box-card" shadow="hover">
+    <el-card class="box-card" shadow="hover" @click="handleGoDetail(hospitalInfo)">
       <div class="content">
         <div class="left">
           <div class="hospital-name">{{ hospitalInfo.hosname }}</div>
@@ -25,7 +25,14 @@
 
 <script setup lang="ts">
 //接收父组件传过来的propos
+import {useRouter} from "vue-router";
+
 defineProps(['hospitalInfo']);
+
+const handleGoDetail = (item: any) => {
+  // 跳转到医院详情页
+  useRouter().push({path:'/hospital',query:{hoscode:item.hoscode}})
+}
 </script>
 
 <style scoped lang="scss">
