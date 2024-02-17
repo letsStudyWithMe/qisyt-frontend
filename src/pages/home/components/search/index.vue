@@ -37,7 +37,7 @@ const querySearch = async (queryString: string, cb: any) => {
 
 const handleGoDetail = (item: any) => {
   // 跳转到医院详情页
-  useRouter().push({path:'/hospital',query:{hoscode:item.hoscode}})
+  useRouter().push({path:'/hospital/register',query:{hoscode:item.hoscode}})
 }
 
 // 深度选择器 :deep()

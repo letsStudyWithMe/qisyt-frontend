@@ -31,7 +31,7 @@ defineProps(['hospitalInfo']);
 
 const handleGoDetail = (item: any) => {
   // 跳转到医院详情页
-  useRouter().push({path:'/hospital',query:{hoscode:item.hoscode}})
+  useRouter().push({path:'/hospital/register',query:{hoscode:item.hoscode}})
 }
 </script>
 

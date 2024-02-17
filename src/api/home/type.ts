@@ -92,7 +92,6 @@ export interface HospitalLevelAndRegionResponseData extends ResponseData {
     data: HospitalLevelAndRegionArr
 }
 
-
 export interface HospitalInfo extends ResponseData {
     data: Content
 }
