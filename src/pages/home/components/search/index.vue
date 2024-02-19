@@ -24,6 +24,7 @@ import {HospitalInfo} from "@/api/home/type.ts";
 let hosname = ref<String>('')
 
 const querySearch = async (queryString: string, cb: any) => {
+  //@ts-ignore
   let res:HospitalInfo = await reqHospSearch(queryString);
   // 整理数据
   let showData = res.data.map(item =>{
@@ -34,10 +35,10 @@ const querySearch = async (queryString: string, cb: any) => {
   })
   cb(showData);
 }
-
+let $router = useRouter();
 const handleGoDetail = (item: any) => {
   // 跳转到医院详情页
-  useRouter().push({path:'/hospital/register',query:{hoscode:item.hoscode}})
+  $router.push({path:'/hospital/register',query:{hoscode:item.hoscode}})
 }
 
 // 深度选择器 :deep()

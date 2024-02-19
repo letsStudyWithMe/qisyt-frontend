@@ -8,11 +8,15 @@ enum API{
     // 获取医院等级的数据接口地址
     HOSPITALLEVEL_URL = '/cmn/dict/findByDictCode/',
     // 首页根据医院名字关键字搜索医院
-    HOSPITALSEARCH_URL = '/hosp/hospital/findByHosname/'
+    HOSPITALSEARCH_URL = '/hosp/hospital/findByHosname/',
+    // 根据医院编号获取医院详情
+    HOSPITALDETAIL_URL = '/hosp/hospital/'
 }
 // 获取医院的数据
-export const reqHospital = (page:number,limit:number,hostype='',districtCode='') => request.get(API.HOSPITAL_URL+`${page}/${limit}?hostype=${hostype}&districtCode=${districtCode}`);
+ export const reqHospital = (page:number,limit:number,hostype='',districtCode='') => request.get(API.HOSPITAL_URL+`${page}/${limit}?hostype=${hostype}&districtCode=${districtCode}`);
 // 获取医院等级的数据
 export const reqHospitalLevelAndRegion = (dictCode:string) => request.get(API.HOSPITALLEVEL_URL+`${dictCode}`);
 // 根据医院名字关键字搜索医院
-export const reqHospSearch = (hosname:string) => request.get(API.HOSPITALSEARCH_URL+hosname);
+export const reqHospSearch = (hosname:string) => request.get(API.HOSPITALSEARCH_URL+`${hosname}`);
+// 根据医院编号获取医院详情
+export const reqHospDetail = (hoscode:string) => request.get(API.HOSPITALDETAIL_URL+`${hoscode}`);

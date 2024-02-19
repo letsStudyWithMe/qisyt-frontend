@@ -6,8 +6,8 @@ import axios from "axios";
 import {ElMessage} from "element-plus";
 
 const request = axios.create({
-  baseURL: '/api', // 请求的基础路径
-  timeout: 5000, // 设置统一的请求超时时间
+    baseURL: '/api', // 请求的基础路径
+    timeout: 60000, // 设置统一的请求超时时间
 })
 
 //请求拦截器
@@ -20,24 +20,27 @@ request.interceptors.request.use((config) =>{
 request.interceptors.response.use((response) =>{
     return response.data;
 },(error) =>{
-    console.log(error);
     //处理错误
-    let status = error.response.status;
-    switch (status) {
-        case 404:
-            ElMessage({
-                type:error,
-                message:error.response.message
-            });
-            break;
-        case 500|501|502|503|504:
-            ElMessage({
-                type:error,
-                message:"服务器错误"
-            });
-            break;
-    }
-    return Promise.reject(new Error(error.message));
+    try {
+        let status = error.response.status;
+        switch (status) {
+            case 404:
+                ElMessage({
+                    type: error,
+                    message: error.response.message
+                });
+                break;
+            case 500 | 501 | 502 | 503 | 504:
+                ElMessage({
+                    type: error,
+                    message: "服务器错误"
+                });
+                    break;
+            }
+            return Promise.reject(new Error(error.message));
+        } catch (e) {
+            return Promise.reject(new Error(error.message));
+        }
     }
 )
 

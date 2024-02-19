@@ -28,10 +28,10 @@
 import {useRouter} from "vue-router";
 
 defineProps(['hospitalInfo']);
-
+let $router = useRouter();
 const handleGoDetail = (item: any) => {
   // 跳转到医院详情页
-  useRouter().push({path:'/hospital/register',query:{hoscode:item.hoscode}})
+  $router.push({path:'/hospital/register',query:{hoscode:item.hoscode}})
 }
 </script>
 

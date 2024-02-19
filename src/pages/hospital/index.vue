@@ -50,13 +50,24 @@ import {
   HomeFilled,
 } from '@element-plus/icons-vue'
 import {useRoute, useRouter} from "vue-router";
+import {onMounted} from "vue";
+import useDetailStore from "@/store/modules/hospitalDetail.ts";
 
 let $router = useRouter();
 // 获取当前路由信息
 let $route = useRoute();
+//获取仓库对象
+let detailStore = useDetailStore();
 const changeActive = (path : string) => {
   $router.push({path});
 }
+//组件挂载完毕:通知pinia仓库发请求获取医院详情的数据，存储仓库当中
+onMounted(() => {
+  //获取医院详情的数据
+  detailStore.getHospital($route.query.hoscode as string);
+  //获取某一个医院科室的数据
+  detailStore.getDeparment($route.query.hoscode as string);
+});
 </script>
 
 <style scoped lang="scss">
@@ -70,6 +81,7 @@ const changeActive = (path : string) => {
     align-items: center;
     .top{
       color: #7f7f7f;
+      margin-bottom: 15px;
     }
   }
   .hospital-content{
